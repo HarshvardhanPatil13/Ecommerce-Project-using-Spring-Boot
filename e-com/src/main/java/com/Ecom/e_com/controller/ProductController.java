@@ -23,7 +23,7 @@ import com.Ecom.e_com.model.Product;
 import com.Ecom.e_com.service.ProductService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping()
 @CrossOrigin
 public class ProductController {
 
