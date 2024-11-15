@@ -22,10 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.Ecom.e_com.model.Product;
 import com.Ecom.e_com.service.ProductService;
 
-@RestController
-@RequestMapping()
-@CrossOrigin
-public class ProductController {
+    @RestController
+    @RequestMapping("/api")
+    @CrossOrigin(origins="https://ecommerce-project-using-spring-boot.vercel.app")
+    public class ProductController {
 
     @Autowired
     ProductService pservice;

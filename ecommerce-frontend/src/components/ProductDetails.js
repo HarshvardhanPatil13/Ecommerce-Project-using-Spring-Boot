@@ -9,7 +9,7 @@ const ProductDetails = ({ setCart }) => {
 
   useEffect(() => {
     // Fetch product details by ID
-    axios.get(`http://localhost:8080/api/products/${id}`)
+    axios.get(`https://ecommerce-service-jscn.onrender.com/api/products/${id}`)
       .then(response => setProduct(response.data))
       .catch(error => console.error('Error fetching product data:', error));
   }, [id]);
@@ -21,7 +21,7 @@ const ProductDetails = ({ setCart }) => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/products/${id}`);
+      await axios.delete(`https://ecommerce-service-jscn.onrender.com/api/products/${id}`);
       alert('Product deleted!');
       navigate('/');
     } catch (error) {
@@ -40,7 +40,7 @@ const ProductDetails = ({ setCart }) => {
       {/* Left side - Product image */}
       <div className="w-1/2">
         <img
-          src={`http://localhost:8080/api/products/${product.id}/image`}
+          src={`https://ecommerce-service-jscn.onrender.com/api/products/${product.id}/image`}
           alt={product.name}
           className="w-full h-96 object-cover rounded-lg"
         />

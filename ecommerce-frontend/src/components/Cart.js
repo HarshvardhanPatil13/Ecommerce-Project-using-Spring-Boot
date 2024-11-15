@@ -16,7 +16,7 @@ const Cart = ({ cart }) => {
                   <p>${item.price}</p>
                 </div>
                 <img
-                  src={`http://localhost:8080/api/products/${item.id}/image`}
+                  src={`https://ecommerce-service-jscn.onrender.com/api/products/${item.id}/image`}
                   alt={item.name}
                   className="w-16 h-16 object-cover rounded-lg"
                 />

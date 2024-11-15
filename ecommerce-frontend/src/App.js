@@ -18,7 +18,7 @@ const App = () => {
 
   // Fetch all products initially
   useEffect(() => {
-    fetch('http://localhost:8080/api/products')
+    fetch('https://ecommerce-service-jscn.onrender.com/api/products')
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching data:', error));
@@ -31,7 +31,7 @@ const App = () => {
       setShowSearchResults(true); // Show search results
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/products/search?keyword=${value}`
+          `https://ecommerce-service-jscn.onrender.com/api/products/search?keyword=${value}`
         );
         setSearchResults(response.data);
         setNoResults(response.data.length === 0);
@@ -74,7 +74,7 @@ const App = () => {
                   {/* Show search results if search is active, else show all products */}
                   {(showSearchResults ? searchResults : products).map(product => (
                     <div key={product.id} className="border rounded-lg p-4 shadow-md">
-                      <img src={`http://localhost:8080/api/products/${product.id}/image`} alt={product.name} className="w-full h-48 object-cover rounded-lg" />
+                      <img src={`https://ecommerce-service-jscn.onrender.com/api/products/${product.id}/image`} alt={product.name} className="w-full h-48 object-cover rounded-lg" />
                       <h3 className="text-xl font-semibold mt-2">{product.name}</h3>
                       <p className="text-gray-700 mt-1">${product.price}</p>
                       <Link to={`/products/${product.id}`} className="text-blue-500 underline">View Details</Link>

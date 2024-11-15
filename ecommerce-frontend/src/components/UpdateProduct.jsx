@@ -21,10 +21,10 @@ const UpdateProduct = () => {
     const categories = ["Electronics", "Clothing", "Home", "Sports", "Beauty"]; // Add your categories here
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/products/${id}`)
+        axios.get(`https://ecommerce-service-jscn.onrender.com/api/products/${id}`)
             .then(response => {
                 setProductData(response.data);
-                setExistingImage(`http://localhost:8080/api/products/${id}/image`);
+                setExistingImage(`https://ecommerce-service-jscn.onrender.com/api/products/${id}/image`);
             })
             .catch(error => console.error('Error fetching product data:', error));
     }, [id]);
@@ -51,7 +51,7 @@ const UpdateProduct = () => {
         }
 
         try {
-            const response = await axios.put(`http://localhost:8080/api/products/${id}`, formData, {
+            const response = await axios.put(`https://ecommerce-service-jscn.onrender.com/api/products/${id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

@@ -7,7 +7,7 @@ const ProductImage = ({ productId }) => {
         const fetchImage = async () => {
             try {
                 // Make a request to the backend to fetch the image
-                const response = await fetch(`http://localhost:8080/api/products/${productId}/image`);
+                const response = await fetch(`https://ecommerce-service-jscn.onrender.com/api/products/${productId}/image`);
                 
                 if (!response.ok) {
                     throw new Error('Image not found');
