@@ -5,6 +5,7 @@ import ProductDetails from './components/ProductDetails';
 import AddProduct from './components/AddProduct';
 import Cart from './components/Cart';
 import UpdateProduct from './components/UpdateProduct';
+import logo from './free.png'; 
 
 const App = () => {
   const [products, setProducts] = useState([]); // To store all products
@@ -50,6 +51,7 @@ const App = () => {
     <Router>
       <div className="container mx-auto p-4">
         <nav className="flex justify-between items-center py-4 bg-gray-800 text-white">
+        <img src={logo} alt="Logo" className="h-16 mr-16" />
           <h1 className="text-2xl font-bold">E-Commerce</h1>
           <div className="flex items-center">
             <input
