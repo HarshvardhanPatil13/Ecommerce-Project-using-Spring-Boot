@@ -6,20 +6,24 @@ const AddProduct = () => {
         name: "",
         brand: "",
         description: "",
-        price: 0,
+        price: "",
         category: "",
         productAvailable: false,
-        stockQuantity: 0,
+        stockQuantity: "",
         releaseDate: "",
     });
     const [imageFile, setImageFile] = useState(null);
-    const categories = ["Electronics", "Clothing", "Home", "Sports", "Beauty"]; // Add your categories here
+    const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState({ show: false, message: '', type: '' });
+
+    const categories = ["Electronics", "Clothing", "Home", "Sports", "Beauty"];
 
     const handleInputChange = (e) => {
-        setProductData({
-            ...productData,
-            [e.target.name]: e.target.value,
-        });
+        const { name, value, type, checked } = e.target;
+        setProductData((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value,
+        }));
     };
 
     const handleFileChange = (e) => {
@@ -28,96 +32,211 @@ const AddProduct = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Check if stock quantity is 0
         if (productData.stockQuantity < 0) {
-            alert("Stock quantity cannot be negative.");
+            setToast({ show: true, message: "Stock quantity cannot be negative.", type: "error" });
             return;
         }
-
+        setLoading(true);
         const formData = new FormData();
         formData.append("product", new Blob([JSON.stringify(productData)], { type: "application/json" }));
-        
-        if (imageFile) {
-            formData.append("imageFile", imageFile);
-        }
+        if (imageFile) formData.append("imageFile", imageFile);
 
         try {
-            const response = await axios.post(`https://ecommerce-service-jscn.onrender.com/api/products`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-
+            // Send to remote API
+            const response = await axios.post(
+                `https://ecommerce-service-jscn.onrender.com/api/products`,  //https://ecommerce-service-jscn.onrender.com/api/products
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
+            // Also send to local API (ignore response)
+            // await axios.post(
+            //     ``,
+            //     formData,
+            //     { headers: { "Content-Type": "multipart/form-data" } }
+            // );
             if (response.status === 201) {
-                alert("Product added successfully!");
-                // Optionally reset the form after submission
+                setToast({ show: true, message: "Product added successfully!", type: "success" });
                 setProductData({
                     name: "",
                     brand: "",
                     description: "",
-                    price: 0,
+                    price: "",
                     category: "",
                     productAvailable: false,
-                    stockQuantity: 0,
+                    stockQuantity: "",
                     releaseDate: "",
                 });
                 setImageFile(null);
             }
         } catch (error) {
-            console.error("There was an error adding the product!", error);
-            alert("Error adding product.");
+            setToast({ show: true, message: "Error adding product.", type: "error" });
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <div className="container mx-auto p-6">
-            <h2 className="text-2xl font-bold mb-4">Add Product</h2>
-            <form onSubmit={handleSubmit} encType="multipart/form-data" className="bg-white shadow-md rounded-lg p-6">
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Name</label>
-                    <input type="text" name="name" value={productData.name} onChange={handleInputChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <div className="max-w-xl mx-auto p-6">
+            <h2 className="text-3xl font-bold mb-6 text-center text-blue-700">Add New Product</h2>
+            <form
+                onSubmit={handleSubmit}
+                encType="multipart/form-data"
+                className="bg-white shadow-lg rounded-xl p-8 space-y-6"
+            >
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-1">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={productData.name}
+                        onChange={handleInputChange}
+                        required
+                        className="input"
+                        placeholder="Product name"
+                    />
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Brand</label>
-                    <input type="text" name="brand" value={productData.brand} onChange={handleInputChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-1">Brand</label>
+                    <input
+                        type="text"
+                        name="brand"
+                        value={productData.brand}
+                        onChange={handleInputChange}
+                        required
+                        className="input"
+                        placeholder="Brand"
+                    />
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                    <textarea name="description" value={productData.description} onChange={handleInputChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-1">Description</label>
+                    <textarea
+                        name="description"
+                        value={productData.description}
+                        onChange={handleInputChange}
+                        required
+                        className="input"
+                        placeholder="Describe the product"
+                        rows={3}
+                    />
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Price</label>
-                    <input type="number" name="price" value={productData.price} onChange={handleInputChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-gray-700 font-semibold mb-1">Price ($)</label>
+                        <input
+                            type="number"
+                            name="price"
+                            value={productData.price}
+                            onChange={handleInputChange}
+                            required
+                            min="0"
+                            className="input"
+                            placeholder="0.00"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-gray-700 font-semibold mb-1">Stock Quantity</label>
+                        <input
+                            type="number"
+                            name="stockQuantity"
+                            value={productData.stockQuantity}
+                            onChange={handleInputChange}
+                            required
+                            min="0"
+                            className="input"
+                            placeholder="0"
+                        />
+                    </div>
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Category</label>
-                    <select name="category" value={productData.category} onChange={handleInputChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-1">Category</label>
+                    <select
+                        name="category"
+                        value={productData.category}
+                        onChange={handleInputChange}
+                        required
+                        className="input"
+                    >
                         <option value="">Select Category</option>
-                        {categories.map((category, index) => (
-                            <option key={index} value={category}>{category}</option>
+                        {categories.map((category, idx) => (
+                            <option key={idx} value={category}>{category}</option>
                         ))}
                     </select>
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Product Available</label>
-                    <input type="checkbox" name="productAvailable" checked={productData.productAvailable} onChange={(e) => setProductData({ ...productData, productAvailable: e.target.checked })} className="mr-2 leading-tight" />
-                    <span className="text-sm">Available</span>
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        name="productAvailable"
+                        checked={productData.productAvailable}
+                        onChange={handleInputChange}
+                        className="accent-blue-600"
+                        id="productAvailable"
+                    />
+                    <label htmlFor="productAvailable" className="text-gray-700 font-semibold">
+                        Available
+                    </label>
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Stock Quantity</label>
-                    <input type="number" name="stockQuantity" value={productData.stockQuantity} onChange={handleInputChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-1">Release Date</label>
+                    <input
+                        type="date"
+                        name="releaseDate"
+                        value={productData.releaseDate}
+                        onChange={handleInputChange}
+                        required
+                        className="input"
+                    />
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Release Date</label>
-                    <input type="date" name="releaseDate" value={productData.releaseDate} onChange={handleInputChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-1">Product Image</label>
+                    <input
+                        type="file"
+                        name="imageFile"
+                        onChange={handleFileChange}
+                        accept="image/*"
+                        className="input"
+                    />
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Upload Image</label>
-                    <input type="file" name="imageFile" onChange={handleFileChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                </div>
-                <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline">Add Product</button>
+                <button
+                    type="submit"
+                    className="w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 transition"
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <span className="flex items-center justify-center">
+                            <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                            </svg>
+                            Adding...
+                        </span>
+                    ) : (
+                        "Add Product"
+                    )}
+                </button>
             </form>
+            {toast.show && (
+                <div className={`fixed bottom-6 right-6 px-4 py-3 rounded shadow-lg z-50 text-white ${toast.type === 'success' ? 'bg-green-600' : 'bg-red-600'}`}>
+                    {toast.message}
+                    <button className="ml-4 font-bold" onClick={() => setToast({ ...toast, show: false })}>×</button>
+                </div>
+            )}
+            {/* Tailwind input style */}
+            <style>{`
+                .input {
+                    width: 100%;
+                    padding: 0.5rem 0.75rem;
+                    border: 1px solid #d1d5db;
+                    border-radius: 0.5rem;
+                    outline: none;
+                    transition: border 0.2s;
+                    font-size: 1rem;
+                    background: #f9fafb;
+                }
+                .input:focus {
+                    border-color: #2563eb;
+                    background: #fff;
+                }
+            `}</style>
         </div>
     );
 };
