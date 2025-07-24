@@ -24,7 +24,7 @@ import com.Ecom.e_com.service.ProductService;
 
     @RestController
     @RequestMapping("/api")
-    @CrossOrigin(origins="https://ecommerce-project-using-spring-boot.vercel.app")
+    @CrossOrigin(origins = {"https://ecommerce-project-using-spring-boot.vercel.app", "http://localhost:3000"})
     public class ProductController {
 
     @Autowired
