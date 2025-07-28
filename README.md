@@ -31,9 +31,7 @@
 ---
 ## 📦 Repository Structure
 ShopNexus/
-
-├── ecom/
-
+├── backend-ecom/
 │   ├── src/
 │   ├── pom.xml
 │   └── application.properties
@@ -45,6 +43,7 @@ ShopNexus/
 │   └── vite.config.js
 │
 └── README.md
+
 
 
 ---
