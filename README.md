@@ -29,11 +29,6 @@
 | Deployment   | Backend + DB on **Render**, Frontend on **Vercel** |
 
 ---
-## 📦 Repository Structure
-<pre> ShopNexus/ ├── ecom/ │ ├── src/ │ ├── pom.xml │ └── application.properties │ ├── ecommerce-frontend/ │ ├── public/ │ ├── src/ │ ├── package.json │ └── vite.config.js │ └── README.md </pre>
-
-
----
 
 ## 🔧 Setup Instructions
 
