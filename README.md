@@ -3,6 +3,7 @@
 **ShopNexus** is a simple e-commerce backend built using **Java Spring Boot**, **Hibernate**, and **PostgreSQL**. It supports functionalities like adding, updating, and deleting products, as well as searching and viewing product details.
 
 > ✅ Frontend hosted on **Vercel**  - https://ecommerce-project-using-spring-boot.vercel.app/
+
 > ✅ Backend and PostgreSQL database hosted on **Render**
 
 ---
