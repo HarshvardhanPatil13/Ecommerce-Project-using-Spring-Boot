@@ -34,9 +34,11 @@
 ecom
 
 ├── src/main/java
+
  └── com/Ecom/...
 
 ├── src/main/resources
+
  └── application.properties
 
 └── pom.xml
