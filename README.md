@@ -31,7 +31,9 @@
 ---
 ## 📦 Repository Structure
 ShopNexus/
+
 ├── ecom/
+
 │   ├── src/
 │   ├── pom.xml
 │   └── application.properties
