@@ -1,6 +1,6 @@
 # 🛒 ShopNexus - E-commerce Website
 
-This is a simple e-commerce backend built using **Java Spring Boot**, **Hibernate**, and **MySQL**. It supports functionalities like adding, updating, and deleting products, as well as searching and viewing product details.
+This is a simple e-commerce backend built using **Java Spring Boot**, **Hibernate**, and **PostgreSQL**. It supports functionalities like adding, updating, and deleting products, as well as searching and viewing product details.
 
 ## 🚀 Features
 
@@ -28,13 +28,15 @@ This is a simple e-commerce backend built using **Java Spring Boot**, **Hibernat
    git clone https://github.com/HarshvardhanPatil13/Ecommerce-Project-using-Spring-Boot.git
 
 2. **Configure application.properties**
-
+```
 spring.datasource.url=your_db_url
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
+```
 
 3. **Run the Spring Boot app**
+   
    Use run button or mvn spring-boot:run
 
 
